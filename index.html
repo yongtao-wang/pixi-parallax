@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Parallax Scrolling</title>
+    <style>
+      body { background-color: #000000; }
+      canvas { background-color: #222222; }
+    </style>
+  </head>
+  <body onload="init();">
+    <div align="center">
+      <canvas id="game-canvas" width="512" height="384">
+      </canvas>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+    <script src="Far.js"></script>
+    <script src="Mid.js"></script>
+    <script src="Scroller.js"></script>
+    <script src="WallSpiritesPool.js"></script>
+    <script src="Main.js"></script>
+
+    <script>
+      function init() {
+        /*
+        The PIXI.Container class is used to represent a collection of display objects 
+        and also represent the stage, which is the root display object.
+        */
+        // stage = new PIXI.Container();
+
+        /*
+        Now that we’ve created a stage we need to select a renderer. 
+        Pixi.js supports two renderers: WebGL and HTML5 Canvas. 
+        You can instantiate a renderer with PIXI.WebGLRenderer or the PIXI.CanvasRenderer class respectively. 
+        However it’s better to let Pixi interrogate the browser and automatically detect 
+        the correct renderer on your behalf. By default Pixi will attempt to use WebGL and will fall back 
+        to its canvas render if WebGL isn’t available.
+        */
+        // renderer = PIXI.autoDetectRenderer(
+        //   512,
+        //   384,
+        //   {view:document.getElementById("game-canvas")}
+        // );
+
+        /*
+        Now that your stage is set up let’s go ahead and actually add some items to it. 
+
+        Items are added to a tree-like structure known as the display list. Your stage acts as the root of 
+        that display list meaning everything added to your stage is rendered. There’s also a stacking order, 
+        meaning that some items will appear in-front of others depending on their designated depth index.
+        */
+        
+        // farTexture.baseTexture.mipmap = false;  // for v4.0.0, tile edge will flickr if not turned false
+        // far = new PIXI.Sprite(farTexture);
+
+        // far = new PIXI.extras.TilingSprite(farTexture, 512, 256);
+        // far = new Far();
+        // stage.addChild(far);
+
+        /*
+        Because the mid layer was added to the stage second it gets placed at a higher depth than the background 
+        layer. Each call to addChild() adds its display object directly above the previous display object.
+        */
+        // midTexture.baseTexture.mipmap = false;
+        // mid = new PIXI.Sprite(midTexture);
+        // mid = new Mid();
+        // stage.addChild(mid);
+
+        // scroller = new Scroller(stage);
+
+        // renderer.render(stage);
+
+        /* 
+        This is a JavaScript function that determines an optimal frame rate for your browser and then calls a 
+        specified function when your canvas/stage can next be redrawn. 
+        */
+        // requestAnimationFrame(update);
+
+        main = new Main();
+      }
+
+      function update() {
+        // far.position.x -= 0.128;  // speed
+        // far.tilePosition.x -= 0.128;
+        // mid.position.x -= 0.64;
+        // mid.tilePosition.x -= 0.64;
+        // far.update();
+        // mid.update();
+        // scroller.update();
+
+        // var newViewportX = scroller.getViewportX() + 5;
+        // scroller.setViewportX(newViewportX);
+
+        scroller.moveViewportXBy(5);
+      
+        renderer.render(stage);
+      
+        requestAnimationFrame(update);
+      }
+    </script>
+  </body>
+</html>
