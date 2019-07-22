@@ -4,6 +4,7 @@ class WalllSpritesPool {
     this.createDecorations();
     this.createFrontEdges();
     this.createBackEdges();
+    this.createSteps();
   }
 
   createWindows() {
@@ -13,13 +14,15 @@ class WalllSpritesPool {
     this.shuffle(this.windows);
   }
 
-  addToSpritePool(array, frameID, count, reversed=false) {
+  addToSpritePool(array, frameID, count, reversed=false, step=0) {
     for (var i = 0; i < count; i++) {
       var sprite = PIXI.Sprite.fromFrame(frameID);
       if(reversed) {
         sprite.anchor.x = 1;
         sprite.scale.x = -1;
       }
+      sprite.anchor.y = step;
+
       array.push(sprite);
     }
   }
@@ -89,6 +92,19 @@ class WalllSpritesPool {
 
   returnBackEdge(sprite) {
     this.backEdges.push(sprite);
+  }
+
+  createSteps() {
+    this.steps = [];
+    this.addToSpritePool(this.steps, "step_01", 2, false, 0.25);
+  }
+
+  borrowStep() {
+    return this.steps.shift();
+  }
+
+  returnStep(sprite) {
+    this.steps.push(sprite);
   }
 
 }
