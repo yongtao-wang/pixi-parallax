@@ -2,10 +2,10 @@ class Walls extends PIXI.Container {
     constructor() {
         super();
         this.pool = new WalllSpritesPool();
-        this.createLookupTable();
+        this.createLookupTables();
     }
 
-    createLookupTable() {
+    createLookupTables() {
         this.borrowWallSpriteLookup = [];
         this.borrowWallSpriteLookup[SliceType.FRONT] = this.pool.borrowFrontEdge;
         this.borrowWallSpriteLookup[SliceType.BACK] = this.pool.borrowBackEdge;
@@ -22,10 +22,10 @@ class Walls extends PIXI.Container {
     }
 
     borrowWallSprite(sliceType) {
-        return this.borrowWallSpriteLookup[sliceType](this.pool);
+        return this.borrowWallSpriteLookup[sliceType].call(this.pool);
     }
 
     returnWallSprite(sliceType, sliceSprite) {
-        return this.returnWallSpriteLookup[sliceType](this.pool, sliceSprite);
+        return this.returnWallSpriteLookup[sliceType].call(this.pool, sliceSprite);
     }
 }
