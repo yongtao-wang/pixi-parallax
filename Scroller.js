@@ -9,6 +9,7 @@ class Scroller {
     this.front = new Walls();
     stage.addChild(this.front);
 
+    this.mapBuilder = new MapBuilder(this.front);
     this.viewportX = 0;
   }
   update() {
