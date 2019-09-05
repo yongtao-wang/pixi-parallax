@@ -1,11 +1,9 @@
 class Walls extends PIXI.Container {
-    // these are not class variable, nor static
-    VIEWPORT_WIDTH = 512;
-    VIEWPORT_NUM_SLICES = Math.ceil(this.VIEWPORT_WIDTH / WallSlice.WIDTH) + 1;
 
     constructor() {
         super();
-        console.log(this.VIEWPORT_NUM_SLICES);
+        this.VIEWPORT_WIDTH = 512;
+        this.VIEWPORT_NUM_SLICES = Math.ceil(this.VIEWPORT_WIDTH / WallSlice.WIDTH) + 1;
         this.pool = new WalllSpritesPool();
         this.createLookupTables();
 
@@ -83,6 +81,8 @@ class Walls extends PIXI.Container {
         this.viewportX = this.checkViewportXBounds(viewportX);
         var prevViewportSliceX = this.viewportSliceX;
         this.viewportSliceX = Math.floor(this.viewportX / WallSlice.WIDTH);
+
+        this.removeOldSlices(prevViewportSliceX);
         this.addNewSlices();
     }
 
@@ -112,6 +112,21 @@ class Walls extends PIXI.Container {
                 else if (slice.sprite != null) {
                     slice.sprite.position.x = firstX + (sliceIndex * WallSlice.WIDTH);
                 }
+        }
+    }
+
+    removeOldSlices(prevViewportSliceX) {
+        var numOldSlices = this.viewportSliceX - prevViewportSliceX;
+        if (numOldSlices > this.VIEWPORT_NUM_SLICES) {
+            numOldSlices = this.VIEWPORT_NUM_SLICES;
+        }
+        for (var i = prevViewportSliceX; i < prevViewportSliceX + numOldSlices; i++) {
+            var slice = this.slices[i];
+            if (slice.sprite != null) {
+                this.returnWallSprite(slice.type, slice.sprite);
+                this.removeChild(slice.sprite);
+                slice.sprite = null;
+            }
         }
     }
 }
