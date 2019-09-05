@@ -1,5 +1,5 @@
 class WallSlice {
-  WIDTH = 64;
+  // WIDTH = 64;
   constructor(type, y) {
     this.type = type;
     this.y = y;
@@ -7,4 +7,5 @@ class WallSlice {
   }
 }
 
-// WallSlice.WIDTH = 64;
+// static variable
+WallSlice.WIDTH = 64;

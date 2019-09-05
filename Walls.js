@@ -1,14 +1,16 @@
 class Walls extends PIXI.Container {
+    // these are not class variable, nor static
     VIEWPORT_WIDTH = 512;
     VIEWPORT_NUM_SLICES = Math.ceil(this.VIEWPORT_WIDTH / WallSlice.WIDTH) + 1;
 
     constructor() {
         super();
+        console.log(this.VIEWPORT_NUM_SLICES);
         this.pool = new WalllSpritesPool();
         this.createLookupTables();
 
         this.slices = [];
-        this.createTestWallSpan();
+        this.createTestMap();
 
         this.viewportX = 0;
         this.viewportSliceX = 0;
@@ -53,6 +55,64 @@ class Walls extends PIXI.Container {
         this.addSlice(SliceType.DECORATION, 192);
         this.addSlice(SliceType.WINDOW, 192);
         this.addSlice(SliceType.BACK, 192);
+    }
+
+    createTestSteppedWallSpan() {
+        this.addSlice(SliceType.FRONT, 192);
+        this.addSlice(SliceType.WINDOW, 192);
+        this.addSlice(SliceType.DECORATION, 192);
+        this.addSlice(SliceType.STEP, 256);
+        this.addSlice(SliceType.WINDOW, 256);
+        this.addSlice(SliceType.BACK, 256);
+    }
+
+    createTestGap() {
+        this.addSlice(SliceType.GAP);
+    }
+
+    createTestMap() {
+        for (var i = 0; i < 10; i++) {
+            this.createTestWallSpan();
+            this.createTestGap();
+            this.createTestSteppedWallSpan();
+            this.createTestGap();
+        }
+    }
+
+    setViewportX(viewportX) {
+        this.viewportX = this.checkViewportXBounds(viewportX);
+        var prevViewportSliceX = this.viewportSliceX;
+        this.viewportSliceX = Math.floor(this.viewportX / WallSlice.WIDTH);
+        this.addNewSlices();
+    }
+
+    checkViewportXBounds(viewportX) {
+        var maxViewportX = (this.slices.length - this.VIEWPORT_NUM_SLICES) * WallSlice.WIDTH;
+        if (viewportX < 0) {
+            viewportX = 0;
+        }
+        else if (viewportX >= maxViewportX) {
+            viewportX = maxViewportX;
+        }
+        return viewportX;
+    }
+
+    addNewSlices() {
+        var firstX = -(this.viewportX % WallSlice.WIDTH);
+        for (var i = this.viewportSliceX, sliceIndex = 0; 
+            i < this.viewportSliceX + this.VIEWPORT_NUM_SLICES; 
+            i++, sliceIndex++ ) {
+                var slice = this.slices[i];
+                if (slice.sprite == null && slice.type != SliceType.GAP) {
+                    slice.sprite = this.borrowWallSprite(slice.type);
+                    slice.sprite.position.x = firstX + (sliceIndex * WallSlice.WIDTH);
+                    slice.sprite.position.y = slice.y;
+                    this.addChild(slice.sprite);
+                }
+                else if (slice.sprite != null) {
+                    slice.sprite.position.x = firstX + (sliceIndex * WallSlice.WIDTH);
+                }
+        }
     }
 }
 

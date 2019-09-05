@@ -19,6 +19,7 @@ class Scroller {
     this.viewportX = viewportX;
     this.far.setViewportX(viewportX);
     this.mid.setViewportX(viewportX);
+    this.front.setViewportX(viewportX);
   }
   getViewportX() {
     return this.viewportX;
