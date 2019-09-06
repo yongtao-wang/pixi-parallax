@@ -15,6 +15,7 @@ class Main {
     */
     // requestAnimationFrame(this.update.bind(this));
 
+    this.scrollSpeed = Main.MIN_SCROLL_SPEED;
     this.loadSpriteSheet();
   }
 
@@ -165,3 +166,6 @@ class Main {
 }
 
 Main.SCROLL_SPEED = 3;
+Main.MIN_SCROLL_SPEED = 5;
+Main.MAX_SCROLL_SPEED = 15;
+Main.SCROLL_ACCELERATION = 0.005;
