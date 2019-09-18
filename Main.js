@@ -20,7 +20,11 @@ class Main {
   }
 
   update() {
-    this.scroller.moveViewportXBy(Main.SCROLL_SPEED);
+    this.scroller.moveViewportXBy(this.scrollSpeed);
+    this.scrollSpeed += Main.SCROLL_ACCELERATION;
+    if (this.scrollSpeed > Main.MAX_SCROLL_SPEED) {
+      this.scrollSpeed = Main.MAX_SCROLL_SPEED;
+    }
     this.renderer.render(this.stage);
     requestAnimationFrame(this.update.bind(this));
   }

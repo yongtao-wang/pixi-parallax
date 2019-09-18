@@ -15,4 +15,4 @@ class Far extends PIXI.extras.TilingSprite {
   }
 }
 
-Far.DELTA_X = 0.128;
+Far.DELTA_X = 0.064;

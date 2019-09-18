@@ -15,4 +15,4 @@ class Mid extends PIXI.extras.TilingSprite{
   }
 }
 
-Mid.DELTA_X = 0.64;
+Mid.DELTA_X = 0.32;
